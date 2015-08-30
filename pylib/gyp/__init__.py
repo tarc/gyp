@@ -433,7 +433,7 @@ def gyp_main(args):
       build_file_dir_components = build_file_dir.split(os.path.sep)
       components_len = len(build_file_dir_components)
       for index in xrange(components_len - 1, -1, -1):
-        if build_file_dir_components[index] == 'src':
+        if build_file_dir_components[index] == 'chromium':
           options.depth = os.path.sep.join(build_file_dir_components)
           break
         del build_file_dir_components[index]
