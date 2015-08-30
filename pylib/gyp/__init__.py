@@ -46,6 +46,11 @@ def FindBuildFiles():
       build_files.append(file)
   return build_files
 
+def  LoadCrossSpecific(default_variables):
+  host_flavor = gyp.common.GetFlavor({})
+
+  default_variables.setdefault ( 'HOST_OS' , host_flavor )
+
 
 def Load(build_files, format, default_variables={},
          includes=[], depth='.', params=None, check=False,
@@ -101,6 +106,8 @@ def Load(build_files, format, default_variables={},
   # the params it will receive in the output phase.
   if getattr(generator, 'CalculateGeneratorInputInfo', None):
     generator.CalculateGeneratorInputInfo(params)
+
+  LoadCrossSpecific(default_variables)
 
   # Fetch the generator specific info that gets fed to input, we use getattr
   # so we can default things and the generators only have to provide what
