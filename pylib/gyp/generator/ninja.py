@@ -75,8 +75,8 @@ def QuoteShellArgument(arg, flavor):
   by the shell."""
   # Rather than attempting to enumerate the bad shell characters, just
   # whitelist common OK ones and quote anything else.
-  if re.match(r'^[a-zA-Z0-9_=.\\/-]+$', arg):
-    return arg  # No quoting necessary.
+  if re.match(r'^[a-zA-Z0-9_=.\\/"-]+$', arg):
+    return arg.replace('"', '\\"')  # No quoting necessary.
   if flavor == 'win':
     return gyp.msvs_emulation.QuoteForRspFile(arg)
   return "'" + arg.replace("'", "'" + '"\'"' + "'")  + "'"
@@ -2237,7 +2237,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params,
     master_ninja.rule(
       'copy',
       description='COPY $in $out',
-      command='ln -f $in $out 2>NUL || (rm -rf $out && cp -af $in $out)')
+      command='echo $in $out & rm -rf $out & cp -af $in $out')
   master_ninja.newline()
 
   all_targets = set()
